@@ -20,6 +20,7 @@ export const getCartByUserId = async (req, res) => {
 // Thêm sản phẩm vào giỏ hàng
 export const addItemToCart = async (req, res) => {
   const { userId, productId, quantity } = req.body;
+  console.log(req.body);
   try {
     // kiểm tra giỏ hàng có tồn tại chưa? dựa theo UserId
     let cart = await Cart.findOne({ userId });
@@ -30,7 +31,6 @@ export const addItemToCart = async (req, res) => {
     const existProductIndex = cart.products.findIndex(
       (item) => item.productId.toString() == productId
     );
-
     // kiểm tra xem sản có tồn tại trong giỏ hàng không?
     if (existProductIndex !== -1) {
       // nếu mà sản phẩm tồn tại trong giỏ hàng thì chúng ta cập nhật số lượng
@@ -42,6 +42,7 @@ export const addItemToCart = async (req, res) => {
     await cart.save();
     return res.status(StatusCodes.OK).json({ cart });
   } catch (error) {
+    console.log(error);
     // trả về client lỗi
     return res
       .status(StatusCodes.BAD_REQUEST)
